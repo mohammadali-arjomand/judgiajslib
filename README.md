@@ -1,11 +1,19 @@
 # JudgiaJsLib
 **Judgia core for judging codes in competitions**
 
+## Installation
+Install JudgiaJsLib with npm or yarn easily
+```bash
+npm install judgiajslib
+# or
+yarn add judgiajslib
+```
+
 ## Documentations
 First of all, we instantiate an object from `Judgia` class
 
 ```ts
-import Judgia from 'judgialib.js'
+import Judgia from 'judgiajslib'
 
 const judgia = new Judgia()
 ```
@@ -26,7 +34,7 @@ And you alse have these methods
 Method                | Arguements                 | Output                                      | Description
 ----------------------|----------------------------|---------------------------------------------|--------------------------------------------
 `compileAndGetStdout` | _Nothing_                  | `Promise<{stderr: string, stdout: string}>` | Compiles C++ code and executes it. Should be runned after setting a `string` value for `cppFilePath`
-`checkAnswer`         | `caseInensitive?: boolean` | `Promise<boolean \| null>`                  | Checks output with static answer. If `staticAnwer` is `null`, it would run judge script and use it. If both `staticAnwer` and `scriptPath` are `null` it's output would be `null`. Also running `compileAndGetStdout` before it is required. If you set `caseInensitive` arguemnt to `false` it would be sencetive to letters. but otherwise it wouldn't.
+`checkAnswer`         | `caseInensitive?: boolean` | `Promise<boolean \| null>`                  | Checks output with static answer. If `staticAnswer` is `null`, it would run judge script and use it. If both `staticAnswer` and `scriptPath` are `null` it's output would be `null`. Also running `compileAndGetStdout` before it is required. If you set `caseInensitive` arguement to `false` it would be sencetive to letters. but otherwise it wouldn't.
 
 ### Read-only Properties
 And also read these properties
