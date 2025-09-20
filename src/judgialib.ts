@@ -5,7 +5,7 @@ import os from 'os'
 class Judgia {
     cppFilePath: string | null
     staticAnswer: string | null
-    scriptAnswer: string | null
+    scriptPath: string | null
     stderr: string | null
     stdout: string | null
     trimedStdout: string | null
@@ -13,7 +13,7 @@ class Judgia {
     constructor () {
         this.cppFilePath = null
         this.staticAnswer = null
-        this.scriptAnswer = null
+        this.scriptPath = null
         this.stderr = null
         this.stdout = null
         this.trimedStdout = null
@@ -66,9 +66,9 @@ class Judgia {
             const trimedAnswer = this.clearWhitespaces(answer)
             return trimedAnswer === trimedOutput
         }
-        else if (this.scriptAnswer) {
+        else if (this.scriptPath) {
             return new Promise((resolve, rejects) => {
-                const child = spawn("python3", [this.scriptAnswer || "", trimedOutput || ""])
+                const child = spawn("python3", [this.scriptPath || "", trimedOutput || ""])
 
                 var stdoutData = ""
                 var stderrData = ""
