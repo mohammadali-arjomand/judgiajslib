@@ -6,18 +6,27 @@ class Judgia {
     cppFilePath: string | null
     staticAnswer: string | null
     scriptPath: string | null
-    stderr: string | null
-    stdout: string | null
-    trimedStdout: string | null
+    private _stderr: string | null
+    private _stdout: string | null
+    private _trimedStdout: string | null
     testcase: string | null
     constructor () {
         this.cppFilePath = null
         this.staticAnswer = null
         this.scriptPath = null
-        this.stderr = null
-        this.stdout = null
-        this.trimedStdout = null
+        this._stderr = null
+        this._stdout = null
+        this._trimedStdout = null
         this.testcase = null
+    }
+    public get stderr(): string | null {
+        return this._stderr
+    }
+    public get stdout(): string | null {
+        return this._stdout
+    }
+    public get trimedStdout(): string | null {
+        return this._trimedStdout
     }
     async compileAndGetStdout(): Promise<{stderr: string, stdout: string}> {
         const time = Date.now()
@@ -39,8 +48,8 @@ class Judgia {
             })
 
             child.on("close", () => {
-                this.stdout = stdoutData
-                this.stderr = stderrData
+                this._stdout = stdoutData
+                this._stderr = stderrData
                 execAsync(`rm ${outputPath}`)
                 resolve({stderr: stderrData, stdout: stdoutData})
             })
@@ -51,15 +60,15 @@ class Judgia {
             }
         })
     }
-    clearWhitespaces(str: string): string {
+    private clearWhitespaces(str: string): string {
         return str.replaceAll(/\s+/g, " ").trim()
     }
     async checkAnswer(caseInensitive: boolean = true): Promise<boolean | null> {
         var trimedOutput : string = ""
-        if (this.stdout) {
-            const output = caseInensitive ? this.stdout?.toLocaleLowerCase() : this.stdout?.toString()
+        if (this._stdout) {
+            const output = caseInensitive ? this._stdout?.toLocaleLowerCase() : this._stdout?.toString()
             trimedOutput = this.clearWhitespaces(output)
-            this.trimedStdout = trimedOutput
+            this._trimedStdout = trimedOutput
         }
         if (this.staticAnswer) {
             const answer = caseInensitive ? this.staticAnswer?.toLocaleLowerCase() : this.staticAnswer?.toString()
