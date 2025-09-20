@@ -21,7 +21,7 @@ class Judgia {
     }
     async compileAndGetStdout(): Promise<{stderr: string, stdout: string}> {
         const time = Date.now()
-        const outputPath = os.homedir() + `/judgia-tmp-${time}.out`
+        const outputPath = os.homedir() + `/.judgia-tmp-${time}.out`
         const execAsync = promisify(exec)
         await execAsync(`g++ ${this.cppFilePath} -o ${outputPath}`)
         return new Promise((resolve, rejects) => {
@@ -41,6 +41,7 @@ class Judgia {
             child.on("close", () => {
                 this.stdout = stdoutData
                 this.stderr = stderrData
+                execAsync(`rm ${outputPath}`)
                 resolve({stderr: stderrData, stdout: stdoutData})
             })
 
