@@ -48,19 +48,47 @@ class Judgia {
                 child.stdin.write(this.testcase)
                 child.stdin.end()
             }
-        })        
+        })
     }
-    checkAnswer(caseInensitive: boolean = true): boolean | null {
-        var trimedOutput
+    clearWhitespaces(str: string): string {
+        return str.replaceAll(/\s+/g, " ").trim()
+    }
+    async checkAnswer(caseInensitive: boolean = true): Promise<boolean | null> {
+        var trimedOutput : string = ""
         if (this.stdout) {
             const output = caseInensitive ? this.stdout?.toLocaleLowerCase() : this.stdout?.toString()
-            trimedOutput = output?.replaceAll(/\s+/g, " ").trim()
+            trimedOutput = this.clearWhitespaces(output)
             this.trimedStdout = trimedOutput
         }
         if (this.staticAnswer) {
             const answer = caseInensitive ? this.staticAnswer?.toLocaleLowerCase() : this.staticAnswer?.toString()
-            const trimedAnswer = answer?.replaceAll(/\s+/g, " ").trim()
+            const trimedAnswer = this.clearWhitespaces(answer)
             return trimedAnswer === trimedOutput
+        }
+        else if (this.scriptAnswer) {
+            return new Promise((resolve, rejects) => {
+                const child = spawn("python3", [this.scriptAnswer || "", trimedOutput || ""])
+
+                var stdoutData = ""
+                var stderrData = ""
+
+                child.stdout.on("data", (chunk) => {
+                    stdoutData += chunk.toString()
+                })
+
+                child.stderr.on("data", (chunk) => {
+                    stderrData += chunk.toString()
+                })
+
+                child.on("close", () => {
+                    resolve(this.clearWhitespaces(stdoutData).toLocaleLowerCase() === "yes")
+                })
+
+                if (this.testcase) {
+                    child.stdin.write(this.testcase)
+                    child.stdin.end()
+                }
+            })        
         }
         return null
     }
