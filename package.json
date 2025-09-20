@@ -1,0 +1,23 @@
+{
+  "name": "judgiajslib",
+  "version": "1.0.0",
+  "description": "Judgia core for judging codes in competitions",
+  "main": "dist/judgialib.js",
+  "type": "module",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node dist/judgialib.js",
+    "dev": "npx tsc && node dist/test/test.js"
+  },
+  "keywords": [
+    "judge",
+    "cp",
+    "algorithms"
+  ],
+  "author": "MohammadAli Arjomand",
+  "license": "MIT License",
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "typescript": "^5.9.2"
+  }
+}

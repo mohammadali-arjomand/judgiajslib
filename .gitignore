@@ -1,0 +1,7 @@
+src/test/
+node_modules/
+dist/
+*.d.ts
+*.d.ts.map
+*.js.map
+src/**/*.js
